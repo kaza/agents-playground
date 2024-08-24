@@ -231,7 +231,28 @@ function SettingsTileContent({ config, localParticipant, name, roomState, isAgen
   return (
     <div className="flex flex-col gap-4 h-full w-full items-start overflow-y-auto">
       {config.description && <ConfigurationPanelItem title="Description">{config.description}</ConfigurationPanelItem>}
-      <ConfigurationPanelItem title="Settings">
+
+      {localVideoTrack && (
+        <ConfigurationPanelItem title="Camera" deviceSelectorKind="videoinput">
+          <div className="relative">
+            <VideoTrack className="rounded-sm border border-gray-800 opacity-70 w-full" trackRef={localVideoTrack} />
+          </div>
+        </ConfigurationPanelItem>
+      )}
+      {localMicTrack && (
+        <ConfigurationPanelItem title="Microphone" deviceSelectorKind="audioinput">
+          <AudioInputTile frequencies={localMultibandVolume} />
+        </ConfigurationPanelItem>
+      )}
+      <div className="w-full"></div>
+      {config.show_qr && (
+        <div className="w-full">
+          <ConfigurationPanelItem title="QR Code">
+            <QRCodeSVG value={window.location.href} width="128" />
+          </ConfigurationPanelItem>
+        </div>
+      )}
+       <ConfigurationPanelItem title="Settings">
         {localParticipant && (
           <div className="flex flex-col gap-2">
             <NameValueRow name="Room" value={name} valueColor={`${config.settings.theme_color}-500`} />
@@ -253,26 +274,6 @@ function SettingsTileContent({ config, localParticipant, name, roomState, isAgen
           />
         </div>
       </ConfigurationPanelItem>
-      {localVideoTrack && (
-        <ConfigurationPanelItem title="Camera" deviceSelectorKind="videoinput">
-          <div className="relative">
-            <VideoTrack className="rounded-sm border border-gray-800 opacity-70 w-full" trackRef={localVideoTrack} />
-          </div>
-        </ConfigurationPanelItem>
-      )}
-      {localMicTrack && (
-        <ConfigurationPanelItem title="Microphone" deviceSelectorKind="audioinput">
-          <AudioInputTile frequencies={localMultibandVolume} />
-        </ConfigurationPanelItem>
-      )}
-      <div className="w-full"></div>
-      {config.show_qr && (
-        <div className="w-full">
-          <ConfigurationPanelItem title="QR Code">
-            <QRCodeSVG value={window.location.href} width="128" />
-          </ConfigurationPanelItem>
-        </div>
-      )}
     </div>
   );
 }
